@@ -5,15 +5,17 @@ import axios from "axios";
 const News = () => {
     const [data, setData]= useState([])
     const [visible, setVisible] = useState(false)
-    const getNews = ()=>{
+    const getNews=()=>{
         setVisible((prev)=>!prev)
-        axios.get("https://newsapi.org/v2/everything?q=apple&from=2025-02-01&to=2025-02-01&sortBy=popularity&apiKey=85f558f143994279aa60facf6c86633c")
-        .then((response) => {
+        axios
+        .get(import.meta.env.VITE_NEWS_API)
+        .then((response)=>{
             setData(response.data.articles)
-          })
-          .catch((error) => {
-            console.log(error)
-          });
+        })
+        .catch((error)=>{
+            console.log("error:"+{error})
+        })
+        
     }
   return (
     <div>

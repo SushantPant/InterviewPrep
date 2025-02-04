@@ -39,7 +39,6 @@ app.post("/initialize-khali", async (req, res) => {
   }
 });
 
-// Example backend route (Express)
 app.get("/complete-khalti-payment", async (req, res) => {
   try {
     const { pidx, status } = req.query;

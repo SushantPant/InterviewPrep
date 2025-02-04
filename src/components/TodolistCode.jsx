@@ -1,48 +1,64 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 
 const TodolistCode = () => {
-    const [newInput, setNewInput]= useState("")
-    const [newInputArray, setNewInputArray]= useState([])
-    const handleTaskCreate = ()=>{
-        if(newInput){
-            setNewInputArray([...newInputArray, newInput])
-            setNewInput("")
-        }
-        }
-    const handleDelete = (i)=>{
-       setNewInputArray(newInputArray.filter((value, index)=>
-            index !== i
-        )
-    )
+  const [newInput, setNewInput] = useState("");
+  const [newInputArray, setNewInputArray] = useState([]);
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+    setNewInputArray(storedTasks);
+  }, []);
+
+  const saveToLocalStorage = (tasks) => {
+    localStorage.setItem("Tasks", JSON.stringify(tasks));
+  };
+
+  const handleTaskCreate = () => {
+    if (newInput && !newInputArray.includes(newInput)) {
+      const updatedTasks = [...newInputArray, newInput];
+      setNewInputArray(updatedTasks);
+      saveToLocalStorage(updatedTasks);
+      setNewInput("");
     }
-    const handleUpdate = (i) => {
-        const updatedValue= prompt("Enter new value", newInputArray[i])
-        if(updatedValue){
-        setNewInputArray(newInputArray.map((value, index)=>(
-            index ===i?updatedValue:value
-        )))
+  };
+
+  const handleDelete = (i) => {
+    const updatedTasks = newInputArray.filter((_, index) => index !== i);
+    setNewInputArray(updatedTasks);
+    saveToLocalStorage(updatedTasks);
+  };
+
+  const handleUpdate = (i) => {
+    const updatedValue = prompt("Enter new value", newInputArray[i]);
+    if (updatedValue) {
+      const updatedTasks = newInputArray.map((task, index) =>
+        index === i ? updatedValue : task
+      );
+      setNewInputArray(updatedTasks);
+      saveToLocalStorage(updatedTasks);
+    } else {
+      alert("Error: Blank update text");
     }
-    else{
-        alert("Error: Blank update text")
-    }
-}
+  };
+
   return (
     <div>
       <input
-            type='text'
-            value={newInput}
-      onChange={(e)=>setNewInput(e.target.value)}
+        type="text"
+        value={newInput}
+        onChange={(e) => setNewInput(e.target.value)}
       />
       <button onClick={handleTaskCreate}>Add</button>
       <ol>
-        {newInputArray.map((value,i)=>(
-            <li key={i}>{value} <button onClick={() => handleDelete(i)}>Delete</button> <button onClick={() => handleUpdate(i)}>Update</button>
-            </li>
-            
+        {newInputArray.map((value, i) => (
+          <li key={i}>
+            {value} <button onClick={() => handleDelete(i)}>Delete</button>{" "}
+            <button onClick={() => handleUpdate(i)}>Update</button>
+          </li>
         ))}
-        </ol>
+      </ol>
     </div>
-  )
-}
+  );
+};
 
-export default TodolistCode
+export default TodolistCode;

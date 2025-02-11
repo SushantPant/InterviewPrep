@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import QrCode from "./QrCode";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
@@ -36,13 +37,22 @@ const Counter = () => {
     <div>
       <div style={{ color: color }}>{count}</div>
       <br />
-      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+      <button
+        onClick={() => {
+          setCount(count + 1);
+          setColor("black");
+        }}
+      >
+        Increase Count
+      </button>
       <button onClick={() => setIsOn((prev) => !prev)}>
         {isOn ? "Stop Counting" : "Start Counting"}
       </button>
       <button
         disabled={throttler > 5}
-        style={throttler > 3 ? { color: "white" } : { color: "black" }}
+        style={
+          throttler > 3 && count < 1 ? { color: "white" } : { color: "black" }
+        }
         onClick={() =>
           count > 0
             ? setCount(count - 1)
@@ -53,6 +63,7 @@ const Counter = () => {
       >
         Reduce Count
       </button>
+      <QrCode count={String(count)}></QrCode>
     </div>
   );
 };

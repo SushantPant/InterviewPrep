@@ -33,7 +33,7 @@ const Hook = () => {
     setValue("absolute");
     setIsClicking(true);
     setCount((prev) => prev + 1);
-    setTime((prev) => prev - 100);
+    setTime((prev) => prev - 10);
     setTimeout(() => {
       setIsClicking(false);
     }, 0);

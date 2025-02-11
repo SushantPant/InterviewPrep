@@ -5,3 +5,4 @@
 3. News API
 4. Khalti Integration
 5. Click game
+6. qrcode API
